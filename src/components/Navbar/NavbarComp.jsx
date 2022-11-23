@@ -1,7 +1,12 @@
 import { Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const NavbarComp = () => {
+const NavbarComp = ({loggedIn}) => {
+  const currentUser = useSelector((state) => {
+    return state.loadedProfile.currentUser;
+  });
+
   return (
     <Navbar style={{ background: "#118C7E" }} className="px-4" expand="lg">
       <Navbar.Brand>
@@ -17,9 +22,12 @@ const NavbarComp = () => {
         Search Users
       </Link>
       <div className="ml-auto">
-        <Link to="/" className=" nav-link text-white">
+      {currentUser === null ? <Link to="/" className=" nav-link text-white">
           Login/Sign Up
-        </Link>
+        </Link> : <Link to="/" className=" nav-link text-white">
+          {currentUser.username}
+        </Link>}
+        
       </div>
     </Navbar>
   );

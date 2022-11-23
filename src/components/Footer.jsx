@@ -56,7 +56,7 @@ const Footer = () => {
                   className="text-white"
                   style={{ fontSize: "1rem", letterSpacing: ".1rem" }}
                 >
-                  Download
+                  DOWNLOAD
                 </h4>
               </div>
 
