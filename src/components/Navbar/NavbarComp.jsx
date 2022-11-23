@@ -45,12 +45,7 @@ const NavbarComp = ({ loggedIn }) => {
               id="basic-nav-dropdown"
             >
               <div className="ml-3">
-                <Link
-                  to="/profile"
-                  className="navlink text-dark text-decoration-none"
-                >
-                  Settings
-                </Link>
+                <NavDropdown.Item to="/profile">Settings</NavDropdown.Item>
               </div>
               <NavDropdown.Item
                 onClick={() => {

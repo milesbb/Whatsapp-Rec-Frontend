@@ -89,6 +89,7 @@ const Search = () => {
                           {participants.includes(user) ? (
                             <Button
                               variant="danger"
+                              className="mt-3"
                               onClick={() => {
                                 removeParticipant(user);
                               }}
@@ -97,6 +98,7 @@ const Search = () => {
                             </Button>
                           ) : (
                             <Button
+                            className="mt-3"
                               onClick={() => {
                                 addParticipant(user);
                               }}
