@@ -93,3 +93,30 @@ export const logoutUser = (user) => {
     }
   };
 };
+
+// export const getUserChats = (userId) => {
+//     return async (dispatch, getState) => {
+//       try {
+//         const config = {
+//           headers: new Headers({
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+//           }),
+//         };
+  
+//         const url = process.env.REACT_APP_BE_URL + "/users/session";
+  
+//         const response = await fetch(url, config);
+  
+//         localStorage.removeItem("accessToken");
+//         localStorage.removeItem("refreshToken");
+  
+//         dispatch({
+//           type: SET_USER_INFO,
+//           payload: null,
+//         });
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+//   };
