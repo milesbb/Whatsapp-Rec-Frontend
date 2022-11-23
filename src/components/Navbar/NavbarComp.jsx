@@ -44,9 +44,14 @@ const NavbarComp = ({ loggedIn }) => {
               title={currentUser.username}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item>
-                <Link to="/profile">Settings</Link>
-              </NavDropdown.Item>
+              <div className="ml-3">
+                <Link
+                  to="/profile"
+                  className="navlink text-dark text-decoration-none"
+                >
+                  Settings
+                </Link>
+              </div>
               <NavDropdown.Item
                 onClick={() => {
                   dispatch(logoutUser(currentUser));

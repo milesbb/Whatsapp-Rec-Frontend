@@ -15,7 +15,7 @@ const Home = () => {
               >
                 <div
                   style={{
-                    borderRadius: "200px",
+                    borderRadius: "100px",
                     background: "#118C7E",
                     fontSize: "1.7rem",
                     fontWeight: "bold",
@@ -47,7 +47,7 @@ const Home = () => {
               >
                 <div
                   style={{
-                    borderRadius: "200px",
+                    borderRadius: "100px",
                     background: "#118C7E",
                     fontSize: "1.7rem",
                     fontWeight: "bold",
@@ -79,7 +79,7 @@ const Home = () => {
               >
                 <div
                   style={{
-                    borderRadius: "200px",
+                    borderRadius: "100px",
                     background: "#118C7E",
                     fontSize: "1.7rem",
                     fontWeight: "bold",
