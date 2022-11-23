@@ -8,7 +8,7 @@ const NavbarComp = ({ loggedIn }) => {
     return state.loadedProfile.currentUser;
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -20,26 +20,45 @@ const NavbarComp = ({ loggedIn }) => {
           alt="whatsapp logo"
         />
       </Navbar.Brand>
-      <Link to="/" className="nav-link text-white mx-3">
-        Chats
-      </Link>
-      <Link to="/" className="nav-link text-white mx-3">
-        Search Users
-      </Link>
-      <div className="ml-auto">
-        {currentUser === null ? (
+
+      {currentUser === null ? (
+        <div className="ml-auto">
           <Link to="/" className=" nav-link text-white">
             Login/Sign Up
           </Link>
-        ) : (
-          <NavDropdown className="text-white" title={currentUser.username} id="basic-nav-dropdown">
-            <NavDropdown.Item onClick={() => {
-              dispatch(logoutUser(currentUser))
-              navigate("/")
-            }}>Logout</NavDropdown.Item>
-          </NavDropdown>
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <Link to="/home" className="nav-link text-white mx-3">
+            Dashboard
+          </Link>
+          <Link to="/chat" className="nav-link text-white mx-3">
+            Chats
+          </Link>
+          <Link to="/search" className="nav-link text-white mx-3">
+            Search Users
+          </Link>
+          <div className="ml-auto">
+            <NavDropdown
+              className="text-white"
+              title={currentUser.username}
+              id="basic-nav-dropdown"
+            >
+              <NavDropdown.Item>
+                <Link to="/profile">Settings</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                onClick={() => {
+                  dispatch(logoutUser(currentUser));
+                  navigate("/");
+                }}
+              >
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>{" "}
+          </div>
+        </>
+      )}
     </Navbar>
   );
 };

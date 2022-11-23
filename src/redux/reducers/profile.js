@@ -1,6 +1,5 @@
 import { SET_USER_INFO } from "../actions/profileActions";
 
-
 const initialState = {
   currentUser: null,
   chats: {
@@ -15,6 +14,9 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         currentUser: action.payload,
+        chats: {
+          list: action.payload.chats,
+        },
       };
 
     default:

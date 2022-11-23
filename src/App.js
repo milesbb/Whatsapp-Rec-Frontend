@@ -7,6 +7,9 @@ import Footer from "./components/Footer";
 import { useState } from "react";
 import SignUp from "./components/loginsignup/SignUp";
 import Home from "./components/Home/Home";
+import ChatMain from "./components/ChatMain/ChatMain";
+import Search from "./components/Search/Search";
+import ProfileSettings from "./components/ProfileSettings/ProfileSettings";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -19,6 +22,9 @@ function App() {
           <Route path="/" element={<Login setLoggedIn={setLoggedIn} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/chat" element={<ChatMain />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<ProfileSettings />} />
         </Routes>
       </BrowserRouter>
       <Footer />
