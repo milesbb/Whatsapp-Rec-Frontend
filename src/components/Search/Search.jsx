@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -23,8 +23,12 @@ const Search = () => {
     return state.loadedProfile.allUsers;
   });
 
+  const currentUser = useSelector((state) => {
+    return state.loadedProfile.currentUser;
+  });
+
   const search = () => {
-    dispatch(searchUsers(searchString));
+    dispatch(searchUsers(searchString, currentUser));
   };
 
   const addParticipant = (user) => {
@@ -40,10 +44,14 @@ const Search = () => {
     console.log(participants);
   };
 
+  useEffect(() => {
+    addParticipant(currentUser);
+  }, []);
+
   const startChat = () => {
-    dispatch({type: ATTEMPT_CHAT, payload: participants})
-    navigate("/chat")
-  }
+    dispatch({ type: ATTEMPT_CHAT, payload: participants });
+    navigate("/chat");
+  };
 
   return (
     <div className="" style={{ height: "80vh", width: "100vw" }}>
@@ -103,7 +111,7 @@ const Search = () => {
                             </Button>
                           ) : (
                             <Button
-                            className="mt-3"
+                              className="mt-3"
                               onClick={() => {
                                 addParticipant(user);
                               }}
@@ -143,21 +151,29 @@ const Search = () => {
                         </Col>
                         <Col className="my-3">{person.username}</Col>
                         <Col>
-                          <Button
-                            variant="danger"
-                            onClick={() => {
-                              removeParticipant(person);
-                            }}
-                          >
-                            Remove
-                          </Button>
+                          {person._id === currentUser._id ? (
+                            <p className="mt-3">You</p>
+                          ) : (
+                            <Button
+                              variant="danger"
+                              onClick={() => {
+                                removeParticipant(person);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          )}
                         </Col>
                       </Row>
                       <hr></hr>
                     </div>
                   );
                 })}
-                <Button className="mt-1 mb-4" variant="success" onClick={startChat}>
+                <Button
+                  className="mt-1 mb-4"
+                  variant="success"
+                  onClick={startChat}
+                >
                   Start Chat!
                 </Button>
               </>

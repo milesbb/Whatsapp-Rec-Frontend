@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Col,
   Container,
   Form,
   FormControl,
+  Image,
   InputGroup,
+  Row,
 } from "react-bootstrap";
-import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-
-const socket = io(process.env.REACT_APP_BE_URL, { transports: ["websocket"] });
+import { handleSocketConnect, socket } from "../../socket";
+import { io } from "socket.io-client";
 
 const ChatMain = () => {
   const [newMessages, setNewMessages] = useState("");
-  const [onlineUsersList, setOnlineUsers] = useState([]);
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
 
   const currentUser = useSelector((state) => {
     return state.loadedProfile.currentUser;
+  });
+
+  const activeChat = useSelector((state) => {
+    return state.loadedProfile.activeChat;
+  });
+
+  const onlineUsers = useSelector((state) => {
+    return state.loadedProfile.onlineUsers;
   });
 
   const attemptedRecipients = useSelector((state) => {
@@ -25,6 +35,7 @@ const ChatMain = () => {
   });
 
   const sendMessage = () => {
+    console.log("triggered send message");
     const newMessage = {
       text: message,
       sender: currentUser.username,
@@ -35,64 +46,29 @@ const ChatMain = () => {
 
     setNewMessages([...newMessages, newMessage]);
     setMessage("");
+    console.log("Messages in convo:", newMessages);
   };
 
   useEffect(() => {
-    socket.connect()
-    const userDetailsObject = {
-      username: currentUser.username,
-      _id: currentUser._id,
-    };
-    
-    console.log("User connected")
-
-    socket.on("signedIn", (OnlineUsers) => {
-      setOnlineUsers(OnlineUsers);
-
-      socket.on("newConnection", (onlineUsersList) => {
-        setOnlineUsers(onlineUsersList);
-      });
-
-      socket.emit("checkChats", attemptedRecipients);
-
-      socket.on("errorCheckingChats", (error) => {
-        console.log(error)
-      })
-
-      socket.on("existingChat", (chatIds) => {
-        console.log("Chat existing")
-        // LOAD CHAT WITH HTTP REQUEST
-
-        const newChatId = "";
-
-        socket.emit("openChat", newChatId);
-      });
-
-      socket.on("noExistingChat", (chats) => {
-        console.log("No chat existing")
-        // CREATE CHAT WITH HTTP REQUEST
-
-        const newChatId = "";
-
-        socket.emit("openChat", newChatId);
-      });
-
-
-      socket.on("newMessage", (receivedMessage) => {
-        setNewMessages((newMessages) => [
-          ...newMessages,
-          receivedMessage.message,
-        ]);
-
-        console.log("DID ME sentMessage");
-      });
+    const socket = io(process.env.REACT_APP_BE_URL, {
+      transports: ["websocket"],
     });
+
+    socket.connect(); //Connects user
+
+    handleSocketConnect(
+      socket,
+      currentUser,
+      attemptedRecipients,
+      setNewMessages,
+      dispatch
+    );
   }, []);
 
   useEffect(() => {
     return () => {
       socket.removeAllListeners();
-      socket.disconnect()
+      socket.disconnect();
     };
   }, []);
 
@@ -107,13 +83,26 @@ const ChatMain = () => {
                 height: "75vh",
               }}
               className="overflow-auto"
-            ></Container>
+            >
+              {activeChat !== null &&
+                activeChat.messages.map((message, i) => {
+                  <Row key={i}>
+                    <Col>{message.sender}</Col>
+                    <Col>
+                      {message.content.text && <p>{message.content.text}</p>}
+                      {message.content.media && (
+                        <Image src={message.content.media} />
+                      )}
+                    </Col>
+                    <Col>{message.createdAt}</Col>
+                  </Row>;
+                })}
+            </Container>
 
             <Form
               className="mb-3"
               onSubmit={(e) => {
                 e.preventDefault();
-                console.log("form triggered");
                 sendMessage();
               }}
             >
@@ -134,7 +123,17 @@ const ChatMain = () => {
           className="w-25 overflow-auto"
         >
           <h2 className="pt-1">Added participants</h2>
-          <Container className="mt-4"></Container>
+          <Container className="mt-4"> 
+     
+            {/* {activeChat !== null &&
+              activeChat.members.map((member) => (
+                <Row key={member._id}>
+                  <Col><Image src={member.avatar} /></Col>
+                  <Col>{member.username}</Col>
+                  <Col>{onlineUsers.}</Col>
+                </Row>
+              ))} */}
+          </Container>
         </div>
       </div>
     </div>
