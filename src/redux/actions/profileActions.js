@@ -6,6 +6,7 @@ export const SET_CHATS = "SET_CHATS";
 export const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT";
 export const SET_HISTORY = "SET_HISTORY";
 export const NEW_MESSAGE = "NEW_MESSAGE";
+export const ATTEMPT_CHAT = "ATTEMPT_CHAT"
 
 export const getProfileInfo = (config, setLoading, setError) => {
   return async (dispatch, getState) => {

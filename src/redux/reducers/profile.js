@@ -1,4 +1,8 @@
-import { SEARCH_USERS, SET_USER_INFO } from "../actions/profileActions";
+import {
+  ATTEMPT_CHAT,
+  SEARCH_USERS,
+  SET_USER_INFO,
+} from "../actions/profileActions";
 
 const initialState = {
   currentUser: null,
@@ -7,6 +11,7 @@ const initialState = {
     list: [],
   },
   allUsers: [],
+  attemptChat: [],
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -20,6 +25,11 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         allUsers: action.payload,
+      };
+    case ATTEMPT_CHAT:
+      return {
+        ...state,
+        attemptChat: action.payload,
       };
     default:
       return state;

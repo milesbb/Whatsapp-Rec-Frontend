@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { searchUsers } from "../../redux/actions/profileActions";
+import { ATTEMPT_CHAT, searchUsers } from "../../redux/actions/profileActions";
 
 const Search = () => {
   const [participants, setParticipants] = useState([]);
@@ -39,6 +39,11 @@ const Search = () => {
     setParticipants([...newParticipants]);
     console.log(participants);
   };
+
+  const startChat = () => {
+    dispatch({type: ATTEMPT_CHAT, payload: participants})
+    navigate("/chat")
+  }
 
   return (
     <div className="" style={{ height: "80vh", width: "100vw" }}>
@@ -152,7 +157,7 @@ const Search = () => {
                     </div>
                   );
                 })}
-                <Button className="mt-1 mb-4" variant="success">
+                <Button className="mt-1 mb-4" variant="success" onClick={startChat}>
                   Start Chat!
                 </Button>
               </>
