@@ -11,6 +11,7 @@ export const handleSocketConnect = (
   currentUser,
   attemptedRecipients,
   setNewMessages,
+  activeChat,
   dispatch
 ) => {
   const userDetailsObject = {
@@ -20,10 +21,10 @@ export const handleSocketConnect = (
 
   console.log("User connected");
 
-  socket.emit("connectReceiveInfo", userDetailsObject)
+  socket.emit("connectReceiveInfo", userDetailsObject);
 
   socket.on("signedIn", (OnlineUsers) => {
-    console.log("SIGNED IN")
+    console.log("SIGNED IN");
     dispatch({ type: "SET_ONLINE_USERS", payload: OnlineUsers });
 
     console.log("chat check stage");
@@ -58,6 +59,8 @@ export const handleSocketConnect = (
         ...newMessages,
         receivedMessage.message,
       ]);
+
+      //   dispatch(loadChat(activeChat._id));
 
       console.log("DID ME sentMessage");
     });

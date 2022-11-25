@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleSocketConnect } from "../../socket";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import { loadChat } from "../../redux/actions/profileActions";
+import { formatDistance } from "date-fns";
 
 export const socket = io(process.env.REACT_APP_BE_URL, {
   transports: ["websocket"],
@@ -51,11 +53,12 @@ const ChatMain = () => {
       content: { text: message },
       timestamp: new Date(),
     };
-
     socket.emit("sendMessage", newMessage);
 
     setNewMessages([...newMessages, newMessage]);
     setMessage("");
+
+    dispatch(loadChat(activeChat._id));
     console.log("Messages in convo:", newMessages);
   };
 
@@ -67,6 +70,7 @@ const ChatMain = () => {
       currentUser,
       attemptedRecipients,
       setNewMessages,
+      activeChat,
       dispatch
     );
   }, []);
@@ -93,29 +97,51 @@ const ChatMain = () => {
               {activeChat !== null &&
                 activeChat.messages.length !== 0 &&
                 activeChat.messages.map((message, i) => {
-                  <Row key={i}>
-                    <Col>{message.sender}</Col>
-                    <Col>
-                      {message.content.text && <p>{message.content.text}</p>}
-                      {message.content.media && (
+                  return (
+                    <Row key={i}>
+                      <Col>{message.sender}</Col>
+                      <Col>
+                        {message.content.text && <p>{message.content.text}</p>}
+                        {/* {message.content.media && (
                         <Image src={message.content.media} />
-                      )}
-                    </Col>
-                    <Col>{message.timestamp}</Col>
-                  </Row>;
+                      )} */}
+                      </Col>
+                      <Col>
+                        {formatDistance(
+                          new Date(message.timestamp),
+                          new Date(),
+                          {
+                            addSuffix: true,
+                          }
+                        )}
+                      </Col>
+                      <hr></hr>
+                    </Row>
+                  );
                 })}
               {newMessages.length !== 0 &&
                 newMessages.map((message, i) => {
-                  <Row key={i}>
-                    <Col>{message.sender}</Col>
-                    <Col>
-                      {message.content.text && <p>{message.content.text}</p>}
-                      {/* {message.content.media !== undefined && message.content. && (
+                  return (
+                    <Row key={i}>
+                      <Col>{message.sender}</Col>
+                      <Col>
+                        {message.content.text && <p>{message.content.text}</p>}
+                        {/* {message.content.media !== undefined && message.content. && (
                         <Image src={message.content.media} />
                       )} */}
-                    </Col>
-                    <Col>{message.timestamp}</Col>
-                  </Row>;
+                      </Col>
+                      <Col>
+                        {formatDistance(
+                          new Date(message.timestamp),
+                          new Date(),
+                          {
+                            addSuffix: true,
+                          }
+                        )}
+                      </Col>
+                      <hr></hr>
+                    </Row>
+                  );
                 })}
             </Container>
 
@@ -152,6 +178,18 @@ const ChatMain = () => {
                   <Col>{onlineUsers.}</Col>
                 </Row>
               ))} */}
+            <Row className="px-3">
+              <Button
+                variant="danger"
+                onClick={() => {
+                    console.log("User disconnect")
+                  socket.removeAllListeners();
+                  socket.disconnect();
+                }}
+              >
+                Disconnect
+              </Button>
+            </Row>
           </Container>
         </div>
       </div>
