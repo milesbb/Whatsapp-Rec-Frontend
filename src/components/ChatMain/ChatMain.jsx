@@ -10,15 +10,15 @@ import {
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleSocketConnect} from "../../socket";
+import { handleSocketConnect } from "../../socket";
 import { io } from "socket.io-client";
 
 export const socket = io(process.env.REACT_APP_BE_URL, {
-    transports: ["websocket"],
-  });
+  transports: ["websocket"],
+});
 
 const ChatMain = () => {
-  const [newMessages, setNewMessages] = useState("");
+  const [newMessages, setNewMessages] = useState([]);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
@@ -41,8 +41,9 @@ const ChatMain = () => {
   const sendMessage = () => {
     console.log("triggered send message");
     const newMessage = {
-      text: message,
       sender: currentUser.username,
+      content: { text: message },
+      timestamp: new Date(),
     };
 
     socket.emit("sendMessage", newMessage);
@@ -53,8 +54,6 @@ const ChatMain = () => {
   };
 
   useEffect(() => {
-    
-
     socket.connect(); //Connects user
 
     handleSocketConnect(
@@ -85,7 +84,7 @@ const ChatMain = () => {
               }}
               className="overflow-auto"
             >
-              {activeChat !== null &&
+              {activeChat !== null && activeChat.messages.length !== 0 &&
                 activeChat.messages.map((message, i) => {
                   <Row key={i}>
                     <Col>{message.sender}</Col>
@@ -98,15 +97,15 @@ const ChatMain = () => {
                     <Col>{message.createdAt}</Col>
                   </Row>;
                 })}
-                {activeChat !== null &&
-                activeChat.messages.map((message, i) => {
+              {newMessages.length !== 0 &&
+                newMessages.map((message, i) => {
                   <Row key={i}>
                     <Col>{message.sender}</Col>
                     <Col>
                       {message.content.text && <p>{message.content.text}</p>}
-                      {message.content.media && (
+                      {/* {message.content.media !== undefined && message.content. && (
                         <Image src={message.content.media} />
-                      )}
+                      )} */}
                     </Col>
                     <Col>{message.createdAt}</Col>
                   </Row>;
@@ -137,8 +136,7 @@ const ChatMain = () => {
           className="w-25 overflow-auto"
         >
           <h2 className="pt-1">Added participants</h2>
-          <Container className="mt-4"> 
-     
+          <Container className="mt-4">
             {/* {activeChat !== null &&
               activeChat.members.map((member) => (
                 <Row key={member._id}>
