@@ -1,16 +1,25 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const activeChat = useSelector((state) => {
+    return state.loadedProfile.activeChat;
+  });
+
+  const currentUser = useSelector((state) => {
+    return state.loadedProfile.currentUser;
+  });
+
   return (
     <div className="p-5" style={{ width: "100vw" }}>
       <div className=" mx-auto">
         <h1>Welcome to your dashboard!</h1>
         <Container className="my-5">
           <Row>
-            <Col sm={12} md={4} className="mt-3">
+            <Col sm={12} md={currentUser === null || activeChat === null ? 6 : 4} className="mt-3">
               <Link
-                to="/search"
+                to={currentUser === null ? "/" : "/search"}
                 className="navlink text-white text-decoration-none"
               >
                 <div
@@ -40,41 +49,43 @@ const Home = () => {
                 </div>
               </Link>
             </Col>
-            <Col sm={12} md={4} className="mt-3">
-              <Link
-                to="/chat"
-                className="navlink text-white text-decoration-none"
-              >
-                <div
-                  style={{
-                    borderRadius: "100px",
-                    background: "#118C7E",
-                    fontSize: "1.7rem",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    height: "14rem",
-                  }}
-                  className="text-white p-5"
+            {activeChat !== null && (
+              <Col sm={12} md={4} className="mt-3">
+                <Link
+                  to="/chat"
+                  className="navlink text-white text-decoration-none"
                 >
-                  Return to your last chat!
-                  <div className="pt-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="60"
-                      height="60"
-                      fill="currentColor"
-                      className="bi bi-chat-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15z" />
-                    </svg>
+                  <div
+                    style={{
+                      borderRadius: "100px",
+                      background: "#118C7E",
+                      fontSize: "1.7rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      height: "14rem",
+                    }}
+                    className="text-white p-5"
+                  >
+                    Return to your last chat!
+                    <div className="pt-4">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="60"
+                        height="60"
+                        fill="currentColor"
+                        className="bi bi-chat-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15z" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </Col>
-            <Col sm={12} md={4} className="mt-3">
+                </Link>
+              </Col>
+            )}
+            <Col sm={12} md={currentUser === null || activeChat === null ? 6 : 4} className="mt-3">
               <Link
-                to="/profile"
+                to={currentUser === null ? "/" : "/profile"}
                 className="navlink text-white text-decoration-none"
               >
                 <div

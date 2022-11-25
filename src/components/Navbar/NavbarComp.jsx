@@ -21,6 +21,10 @@ const NavbarComp = ({ loggedIn }) => {
         />
       </Navbar.Brand>
 
+      <Link to="/home" className="nav-link text-white mx-3">
+            Dashboard
+          </Link>
+
       {currentUser === null ? (
         <div className="ml-auto">
           <Link to="/" className=" nav-link text-white">
@@ -29,9 +33,7 @@ const NavbarComp = ({ loggedIn }) => {
         </div>
       ) : (
         <>
-          <Link to="/home" className="nav-link text-white mx-3">
-            Dashboard
-          </Link>
+          
           <Link to="/chat" className="nav-link text-white mx-3">
             Chats
           </Link>
