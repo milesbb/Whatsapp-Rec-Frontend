@@ -55,7 +55,6 @@ const ChatMain = () => {
     };
     socket.emit("sendMessage", newMessage);
 
-    setNewMessages([...newMessages, newMessage]);
     setMessage("");
 
     dispatch(loadChat(activeChat._id));
@@ -98,8 +97,8 @@ const ChatMain = () => {
                 activeChat.messages.length !== 0 &&
                 activeChat.messages.map((message, i) => {
                   return (
-                    <Row key={i}>
-                      <Col>{message.sender}</Col>
+                    <Row key={i} className="mt-3">
+                      <Col>{message.sender}:</Col>
                       <Col>
                         {message.content.text && <p>{message.content.text}</p>}
                         {/* {message.content.media && (
