@@ -33,7 +33,7 @@ const Search = () => {
   };
 
   const addParticipant = (user) => {
-    setParticipants([...participants, user]);
+    setParticipants([...participants, user._id]);
     console.log(participants);
   };
 

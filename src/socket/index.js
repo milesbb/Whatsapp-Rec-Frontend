@@ -20,12 +20,15 @@ export const handleSocketConnect = (
 
   console.log("User connected");
 
+  socket.emit("connectReceiveInfo", userDetailsObject)
+
   socket.on("signedIn", (OnlineUsers) => {
+    console.log("SIGNED IN")
     dispatch({ type: "SET_ONLINE_USERS", payload: OnlineUsers });
 
     console.log("chat check stage");
 
-    // socket.emit("checkChats", attemptedRecipients);
+    socket.emit("checkChats", attemptedRecipients);
 
     socket.on("errorCheckingChats", (error) => {
       console.log("Error checking chats:", error);
