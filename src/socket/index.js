@@ -20,6 +20,9 @@ export const handleSocketConnect = (
 
   console.log("User connected");
 
+  socket.on("newConnection", (onlineUsersList) => {
+    dispatch({ type: "SET_ONLINE_USERS", payload: onlineUsersList });
+  });
   socket.emit("connectReceiveInfo", userDetailsObject)
 
   socket.on("signedIn", (OnlineUsers) => {
