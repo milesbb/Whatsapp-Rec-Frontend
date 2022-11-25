@@ -168,28 +168,16 @@ const ChatMain = () => {
           style={{ boxShadow: "-2px 2px 15px -4px #000000", height: "80vh" }}
           className="w-25 overflow-auto"
         >
-          <h2 className="pt-1">Added participants</h2>
+          <h2 className="pt-1">Members</h2>
           <Container className="mt-4">
-            {/* {activeChat !== null &&
+            {activeChat !== null &&
               activeChat.members.map((member) => (
-                <Row key={member._id}>
-                  <Col><Image src={member.avatar} /></Col>
-                  <Col>{member.username}</Col>
-                  <Col>{onlineUsers.}</Col>
+                <Row className="my-1" key={member._id}>
+                  <Col><Image className="mb-3"  src={member.avatar} /></Col>
+                  <Col className="pt-3">{member.username}</Col>
+                <hr></hr>
                 </Row>
-              ))} */}
-            <Row className="px-3">
-              <Button
-                variant="danger"
-                onClick={() => {
-                    console.log("User disconnect")
-                  socket.removeAllListeners();
-                  socket.disconnect();
-                }}
-              >
-                Disconnect
-              </Button>
-            </Row>
+              ))}
           </Container>
         </div>
       </div>
