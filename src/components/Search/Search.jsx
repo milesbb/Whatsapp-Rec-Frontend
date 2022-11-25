@@ -53,6 +53,9 @@ const Search = () => {
   };
 
   useEffect(() => {
+    if (currentUser === null) {
+        navigate("/")
+    }
     addParticipant(currentUser);
   }, []);
 

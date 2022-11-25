@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { handleSocketConnect } from "../../socket";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 export const socket = io(process.env.REACT_APP_BE_URL, {
   transports: ["websocket"],
@@ -21,10 +22,15 @@ const ChatMain = () => {
   const [newMessages, setNewMessages] = useState([]);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const currentUser = useSelector((state) => {
     return state.loadedProfile.currentUser;
   });
+
+  if (currentUser === null) {
+    navigate("/");
+  }
 
   const activeChat = useSelector((state) => {
     return state.loadedProfile.activeChat;
@@ -84,7 +90,8 @@ const ChatMain = () => {
               }}
               className="overflow-auto"
             >
-              {activeChat !== null && activeChat.messages.length !== 0 &&
+              {activeChat !== null &&
+                activeChat.messages.length !== 0 &&
                 activeChat.messages.map((message, i) => {
                   <Row key={i}>
                     <Col>{message.sender}</Col>
@@ -94,7 +101,7 @@ const ChatMain = () => {
                         <Image src={message.content.media} />
                       )}
                     </Col>
-                    <Col>{message.createdAt}</Col>
+                    <Col>{message.timestamp}</Col>
                   </Row>;
                 })}
               {newMessages.length !== 0 &&
@@ -107,7 +114,7 @@ const ChatMain = () => {
                         <Image src={message.content.media} />
                       )} */}
                     </Col>
-                    <Col>{message.createdAt}</Col>
+                    <Col>{message.timestamp}</Col>
                   </Row>;
                 })}
             </Container>
