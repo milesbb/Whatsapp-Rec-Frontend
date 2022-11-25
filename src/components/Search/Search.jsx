@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ATTEMPT_CHAT, searchUsers } from "../../redux/actions/profileActions";
+import { socket } from "../ChatMain/ChatMain";
 
 const Search = () => {
   const [participants, setParticipants] = useState([]);
@@ -49,6 +50,7 @@ const Search = () => {
   }, []);
 
   const startChat = () => {
+    socket.emit("checkChats", participants)
     dispatch({ type: ATTEMPT_CHAT, payload: participants });
     navigate("/chat");
   };

@@ -22,14 +22,10 @@ export const handleSocketConnect = (
 
   socket.on("signedIn", (OnlineUsers) => {
     dispatch({ type: "SET_ONLINE_USERS", payload: OnlineUsers });
-    
-    socket.on("newConnection", (onlineUsersList) => {
-      dispatch({ type: "SET_ONLINE_USERS", payload: onlineUsersList });
-    });
 
     console.log("chat check stage");
 
-    socket.emit("checkChats", attemptedRecipients);
+    // socket.emit("checkChats", attemptedRecipients);
 
     socket.on("errorCheckingChats", (error) => {
       console.log("Error checking chats:", error);
@@ -61,6 +57,9 @@ export const handleSocketConnect = (
       ]);
 
       console.log("DID ME sentMessage");
+    });
+    socket.on("newConnection", (onlineUsersList) => {
+      dispatch({ type: "SET_ONLINE_USERS", payload: onlineUsersList });
     });
   });
 };

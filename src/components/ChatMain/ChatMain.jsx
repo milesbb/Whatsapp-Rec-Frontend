@@ -10,8 +10,12 @@ import {
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleSocketConnect, socket } from "../../socket";
+import { handleSocketConnect} from "../../socket";
 import { io } from "socket.io-client";
+
+export const socket = io(process.env.REACT_APP_BE_URL, {
+    transports: ["websocket"],
+  });
 
 const ChatMain = () => {
   const [newMessages, setNewMessages] = useState("");
@@ -39,7 +43,6 @@ const ChatMain = () => {
     const newMessage = {
       text: message,
       sender: currentUser.username,
-      timestamp: new Date(),
     };
 
     socket.emit("sendMessage", newMessage);
@@ -50,9 +53,7 @@ const ChatMain = () => {
   };
 
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_BE_URL, {
-      transports: ["websocket"],
-    });
+    
 
     socket.connect(); //Connects user
 
@@ -85,6 +86,19 @@ const ChatMain = () => {
               className="overflow-auto"
             >
               {activeChat !== null &&
+                activeChat.messages.map((message, i) => {
+                  <Row key={i}>
+                    <Col>{message.sender}</Col>
+                    <Col>
+                      {message.content.text && <p>{message.content.text}</p>}
+                      {message.content.media && (
+                        <Image src={message.content.media} />
+                      )}
+                    </Col>
+                    <Col>{message.createdAt}</Col>
+                  </Row>;
+                })}
+                {activeChat !== null &&
                 activeChat.messages.map((message, i) => {
                   <Row key={i}>
                     <Col>{message.sender}</Col>
