@@ -15,6 +15,7 @@ import { socket } from "../ChatMain/ChatMain";
 
 const Search = () => {
   const [participants, setParticipants] = useState([]);
+  const [participantsInfo, setParticipantsInfo] = useState([]);
   const [searchString, setSearchString] = useState("");
 
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Search = () => {
 
   const addParticipant = (user) => {
     setParticipants([...participants, user._id]);
+    setParticipantsInfo([...participantsInfo, user]);
     console.log(participants);
   };
 
@@ -42,6 +44,11 @@ const Search = () => {
       (participant) => participant._id !== user._id
     );
     setParticipants([...newParticipants]);
+
+    let newParticipantsInfo = participantsInfo.filter(
+      (participant) => participant._id !== user._id
+    );
+    setParticipantsInfo([...newParticipantsInfo]);
     console.log(participants);
   };
 
@@ -50,7 +57,7 @@ const Search = () => {
   }, []);
 
   const startChat = () => {
-    socket.emit("checkChats", participants)
+    socket.emit("checkChats", participants);
     dispatch({ type: ATTEMPT_CHAT, payload: participants });
     navigate("/chat");
   };
@@ -141,7 +148,7 @@ const Search = () => {
               <p>No participants added yet</p>
             ) : (
               <>
-                {participants.map((person, i) => {
+                {participantsInfo.map((person, i) => {
                   return (
                     <div key={i}>
                       <Row>
